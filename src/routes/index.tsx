@@ -19,7 +19,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
     <section id="projects" className="relative mt-24">
       <div className="mx-auto flex w-full max-w-6xl items-end justify-between px-6 md:px-16">
         <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
-        <span className="font-mono text-sm text-muted-foreground">{total} CARDS</span>
+        <span className="font-mono text-sm text-muted-foreground">{total} PROJECTS</span>
       </div>
       <div className="mx-auto max-w-4xl px-6 pb-[10vh] pt-10 md:px-16">
         {items.map((it, i) => (
