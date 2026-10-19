@@ -93,7 +93,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = ["About", "Projects", "Skills", "Blog", "Contact"];
+const nav = [
+  { label: "About", icon: User },
+  { label: "Projects", icon: Film },
+  { label: "Skills", icon: Cpu },
+  { label: "Blog", icon: BookOpen },
+  { label: "Contact", icon: Mail },
+];
 const skills = [
   { name: "Frontend", icon: AppWindow, level: 85 },
   { name: "Backend", icon: Network, level: 80 },
@@ -109,10 +115,15 @@ const projects = [
 function Index() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      <nav className="flex justify-center gap-8 py-8 text-sm uppercase tracking-widest text-muted-foreground">
-        {nav.map((n) => (
-          <a key={n} href={`#${n.toLowerCase()}`} className="transition-colors hover:text-foreground">{n}</a>
+      <nav className="sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border bg-background/70 px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground backdrop-blur-md">
+        {nav.map(({ label, icon: Icon }) => (
+          <a key={label} href={`#${label.toLowerCase()}`} className="flex items-center gap-2 rounded-full px-3 py-2 transition-colors hover:bg-secondary hover:text-foreground">
+            <Icon className="h-4 w-4" /><span className="hidden sm:inline">{label}</span>
+          </a>
         ))}
+        <a href={LINKEDIN} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="ml-1 rounded-full bg-primary p-2 text-primary-foreground transition hover:brightness-125">
+          <LinkedInIcon />
+        </a>
       </nav>
 
       <header className="relative mx-auto max-w-6xl">
@@ -155,22 +166,27 @@ function Index() {
             </div>
           </div>
         </section>
+      </main>
 
-        <section id="projects" className="mt-20">
-          <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p) => (
-              <figure key={p.title} className="group overflow-hidden rounded-lg bg-card">
-                <img src={p.img} alt={p.title} className="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105" />
-                <figcaption className="p-4 text-sm text-muted-foreground">{p.title}</figcaption>
-              </figure>
-            ))}
+      <FilmStrip items={projects} />
+
+      <main className="mx-auto max-w-6xl px-6 pb-16 md:px-16">
+        <section id="contact" className="mt-20 rounded-lg border border-border bg-card p-10 text-center">
+          <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Available for new projects
+          </span>
+          <h2 className="mt-4 font-display text-2xl font-bold">LET'S BUILD SOMETHING</h2>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:brightness-125">
+              <Mail className="h-4 w-4" /> {EMAIL}
+            </a>
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 font-semibold text-secondary-foreground transition hover:brightness-125">
+              <MessageCircle className="h-4 w-4" /> WhatsApp 0112 504 334
+            </a>
+            <a href={LINKEDIN} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 font-semibold text-secondary-foreground transition hover:brightness-125">
+              <LinkedInIcon /> LinkedIn
+            </a>
           </div>
-        </section>
-
-        <section id="contact" className="mt-20 rounded-lg bg-card p-10 text-center">
-          <h2 className="font-display text-2xl font-bold">LET'S BUILD SOMETHING</h2>
-          <a href="mailto:hello@example.com" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 font-semibold uppercase text-primary-foreground">Contact me</a>
         </section>
       </main>
     </div>
