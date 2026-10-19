@@ -23,7 +23,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
       </div>
       <div className="mx-auto max-w-4xl px-6 pb-[40vh] pt-10 md:px-16">
         {items.map((it, i) => (
-          <div key={it.title} className="sticky mb-8" style={{ top: `${88 + i * 28}px`, zIndex: i + 1 }}>
+          <div key={it.title} className="sticky mb-10" style={{ top: `${84 + i * 54}px`, zIndex: i + 1 }}>
             <article className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
               <header className="flex items-center justify-between border-b border-border px-5 py-3">
                 <span className="font-display text-base font-bold uppercase tracking-wide">{it.title}</span>
