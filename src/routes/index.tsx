@@ -39,6 +39,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
             </article>
           </div>
         ))}
+        <div aria-hidden className="h-[35vh]" />
       </div>
     </section>
   );
