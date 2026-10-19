@@ -44,7 +44,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
     </section>
   );
 }
-import hero from "@/assets/hero.jpg.asset.json";
+import hero from "@/assets/hero-clean.png";
 import p0 from "@/assets/p0.jpg.asset.json";
 import p1 from "@/assets/p1.jpg.asset.json";
 import p2 from "@/assets/p2.jpg.asset.json";
@@ -97,13 +97,15 @@ function Index() {
       </nav>
 
       <header className="relative mx-auto max-w-6xl">
-        <img src={hero.url} alt="Collins Omondi in front of mountains" className="w-full object-cover" />
+        <img src={hero} alt="Collins Omondi in front of mountains" className="w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         <div className="absolute bottom-[8%] right-[6%] max-w-md text-right md:text-left">
-          <h1 className="font-display text-4xl font-extrabold leading-none md:text-7xl">
-            ELEVATING<br /><span className="text-muted-foreground">DIGITAL<br />FRONTIERS</span>
+          <h1 className="hero-title font-display">
+            <span className="hero-line">Elevating</span>
+            <span className="hero-line hero-line--muted">Digital</span>
+            <span className="hero-line hero-line--muted">Frontiers</span>
           </h1>
-          <p className="mt-4 text-sm uppercase tracking-wide md:text-xl">Full Stack Developer Portfolio</p>
+          <p className="hero-subtitle">Full Stack Developer Portfolio</p>
           <a href="#contact" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 font-semibold uppercase text-primary-foreground transition hover:brightness-125">
             Contact me
           </a>
