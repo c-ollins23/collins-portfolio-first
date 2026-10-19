@@ -1,5 +1,79 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppWindow, Network, Database, Cloud } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { AppWindow, Network, Database, Cloud, User, Film, Cpu, BookOpen, Mail, MessageCircle } from "lucide-react";
+
+const LINKEDIN = "https://www.linkedin.com/in/collins-omondi-40b4b2441";
+const EMAIL = "collinsjoel28@gmail.com";
+const WHATSAPP = "https://wa.me/254112504334";
+
+function LinkedInIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  );
+}
+
+function FilmStrip({ items }: { items: { img: string; title: string }[] }) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const el = wrap.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      setP(Math.min(1, Math.max(0, -r.top / total)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  const holes = (
+    <div className="flex justify-between gap-3 px-3 py-2">
+      {Array.from({ length: 60 }).map((_, i) => (
+        <span key={i} className="h-3 w-4 shrink-0 rounded-sm bg-background" />
+      ))}
+    </div>
+  );
+  return (
+    <section id="projects" ref={wrap} style={{ height: `${items.length * 80 + 60}vh` }} className="relative mt-20">
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        <div className="mx-auto mb-8 flex w-full max-w-6xl items-end justify-between px-6 md:px-16">
+          <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
+          <span className="font-mono text-sm text-muted-foreground">
+            {String(Math.min(items.length, Math.floor(p * items.length) + 1)).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+          </span>
+        </div>
+        <div className="overflow-hidden bg-card">
+          {holes}
+          <div
+            className="flex gap-6 px-[10vw] py-2 will-change-transform"
+            style={{ transform: `translateX(calc(${-p} * (100% - 100vw)))`, width: "max-content" }}
+          >
+            {items.map((it, i) => (
+              <figure key={it.title} className="group relative w-[70vw] max-w-2xl shrink-0 overflow-hidden rounded-sm border border-border">
+                <img src={it.img} alt={it.title} className="aspect-[16/10] w-full object-cover grayscale-[40%] transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-background/90 to-transparent p-5">
+                  <span className="font-display text-lg font-bold">{it.title}</span>
+                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          {holes}
+        </div>
+        <div className="mx-auto mt-8 h-0.5 w-full max-w-6xl bg-muted px-6">
+          <div className="h-full bg-primary" style={{ width: `${p * 100}%` }} />
+        </div>
+      </div>
+    </section>
+  );
+}
 import hero from "@/assets/hero.jpg.asset.json";
 import p0 from "@/assets/p0.jpg.asset.json";
 import p1 from "@/assets/p1.jpg.asset.json";
@@ -19,7 +93,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = ["About", "Projects", "Skills", "Blog", "Contact"];
+const nav = [
+  { label: "About", icon: User },
+  { label: "Projects", icon: Film },
+  { label: "Skills", icon: Cpu },
+  { label: "Blog", icon: BookOpen },
+  { label: "Contact", icon: Mail },
+];
 const skills = [
   { name: "Frontend", icon: AppWindow, level: 85 },
   { name: "Backend", icon: Network, level: 80 },
@@ -35,10 +115,15 @@ const projects = [
 function Index() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      <nav className="flex justify-center gap-8 py-8 text-sm uppercase tracking-widest text-muted-foreground">
-        {nav.map((n) => (
-          <a key={n} href={`#${n.toLowerCase()}`} className="transition-colors hover:text-foreground">{n}</a>
+      <nav className="sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border bg-background/70 px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground backdrop-blur-md">
+        {nav.map(({ label, icon: Icon }) => (
+          <a key={label} href={`#${label.toLowerCase()}`} className="flex items-center gap-2 rounded-full px-3 py-2 transition-colors hover:bg-secondary hover:text-foreground">
+            <Icon className="h-4 w-4" /><span className="hidden sm:inline">{label}</span>
+          </a>
         ))}
+        <a href={LINKEDIN} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="ml-1 rounded-full bg-primary p-2 text-primary-foreground transition hover:brightness-125">
+          <LinkedInIcon />
+        </a>
       </nav>
 
       <header className="relative mx-auto max-w-6xl">
@@ -81,22 +166,27 @@ function Index() {
             </div>
           </div>
         </section>
+      </main>
 
-        <section id="projects" className="mt-20">
-          <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p) => (
-              <figure key={p.title} className="group overflow-hidden rounded-lg bg-card">
-                <img src={p.img} alt={p.title} className="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-105" />
-                <figcaption className="p-4 text-sm text-muted-foreground">{p.title}</figcaption>
-              </figure>
-            ))}
+      <FilmStrip items={projects} />
+
+      <main className="mx-auto max-w-6xl px-6 pb-16 md:px-16">
+        <section id="contact" className="mt-20 rounded-lg border border-border bg-card p-10 text-center">
+          <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Available for new projects
+          </span>
+          <h2 className="mt-4 font-display text-2xl font-bold">LET'S BUILD SOMETHING</h2>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:brightness-125">
+              <Mail className="h-4 w-4" /> {EMAIL}
+            </a>
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 font-semibold text-secondary-foreground transition hover:brightness-125">
+              <MessageCircle className="h-4 w-4" /> WhatsApp 0112 504 334
+            </a>
+            <a href={LINKEDIN} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-secondary px-6 py-3 font-semibold text-secondary-foreground transition hover:brightness-125">
+              <LinkedInIcon /> LinkedIn
+            </a>
           </div>
-        </section>
-
-        <section id="contact" className="mt-20 rounded-lg bg-card p-10 text-center">
-          <h2 className="font-display text-2xl font-bold">LET'S BUILD SOMETHING</h2>
-          <a href="mailto:hello@example.com" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 font-semibold uppercase text-primary-foreground">Contact me</a>
         </section>
       </main>
     </div>
