@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
 import { AppWindow, Network, Database, Cloud, User, Film, Cpu, BookOpen, Mail, MessageCircle } from "lucide-react";
 
 const LINKEDIN = "https://www.linkedin.com/in/collins-omondi-40b4b2441";
@@ -14,62 +13,33 @@ function LinkedInIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-function FilmStrip({ items }: { items: { img: string; title: string }[] }) {
-  const wrap = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const onScroll = () => {
-      const el = wrap.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const total = el.offsetHeight - window.innerHeight;
-      setP(Math.min(1, Math.max(0, -r.top / total)));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-  const holes = (
-    <div className="flex justify-between gap-3 px-3 py-2">
-      {Array.from({ length: 60 }).map((_, i) => (
-        <span key={i} className="h-3 w-4 shrink-0 rounded-sm bg-background" />
-      ))}
-    </div>
-  );
+function StackingCards({ items }: { items: { img: string; title: string }[] }) {
+  const total = String(items.length).padStart(2, "0");
   return (
-    <section id="projects" ref={wrap} style={{ height: `${items.length * 80 + 60}vh` }} className="relative mt-20">
-      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <div className="mx-auto mb-8 flex w-full max-w-6xl items-end justify-between px-6 md:px-16">
-          <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
-          <span className="font-mono text-sm text-muted-foreground">
-            {String(Math.min(items.length, Math.floor(p * items.length) + 1)).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-          </span>
-        </div>
-        <div className="overflow-hidden bg-card">
-          {holes}
-          <div
-            className="flex gap-6 px-[10vw] py-2 will-change-transform"
-            style={{ transform: `translateX(calc(${-p} * (100% - 100vw)))`, width: "max-content" }}
-          >
-            {items.map((it, i) => (
-              <figure key={it.title} className="group relative w-[70vw] max-w-2xl shrink-0 overflow-hidden rounded-sm border border-border">
-                <img src={it.img} alt={it.title} className="aspect-[16/10] w-full object-cover grayscale-[40%] transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />
-                <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-background/90 to-transparent p-5">
-                  <span className="font-display text-lg font-bold">{it.title}</span>
-                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                </figcaption>
-              </figure>
-            ))}
+    <section id="projects" className="relative mt-24">
+      <div className="mx-auto flex w-full max-w-6xl items-end justify-between px-6 md:px-16">
+        <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
+        <span className="font-mono text-sm text-muted-foreground">{total} PROJECTS</span>
+      </div>
+      <div className="mx-auto max-w-4xl px-6 pb-[10vh] pt-10 md:px-16">
+        {items.map((it, i) => (
+          <div key={it.title} className="sticky mb-10" style={{ top: `${84 + i * 54}px`, zIndex: i + 1 }}>
+            <article className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
+              <header className="flex items-center justify-between border-b border-border px-5 py-3">
+                <span className="font-display text-base font-bold uppercase tracking-wide">{it.title}</span>
+                <span className="font-mono text-xs text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")} / {total}
+                </span>
+              </header>
+              <img
+                src={it.img}
+                alt={it.title}
+                className="aspect-[16/9] w-full object-cover grayscale-[35%] transition duration-700 hover:grayscale-0"
+              />
+            </article>
           </div>
-          {holes}
-        </div>
-        <div className="mx-auto mt-8 h-0.5 w-full max-w-6xl bg-muted px-6">
-          <div className="h-full bg-primary" style={{ width: `${p * 100}%` }} />
-        </div>
+        ))}
+        <div aria-hidden className="h-[35vh]" />
       </div>
     </section>
   );
@@ -168,7 +138,7 @@ function Index() {
         </section>
       </main>
 
-      <FilmStrip items={projects} />
+      <StackingCards items={projects} />
 
       <main className="mx-auto max-w-6xl px-6 pb-16 md:px-16">
         <section id="contact" className="mt-20 rounded-lg border border-border bg-card p-10 text-center">
