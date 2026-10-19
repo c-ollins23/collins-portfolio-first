@@ -21,7 +21,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
         <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
         <span className="font-mono text-sm text-muted-foreground">{total} CARDS</span>
       </div>
-      <div className="mx-auto max-w-4xl px-6 pb-[40vh] pt-10 md:px-16">
+      <div className="mx-auto max-w-4xl px-6 pb-[10vh] pt-10 md:px-16">
         {items.map((it, i) => (
           <div key={it.title} className="sticky mb-10" style={{ top: `${84 + i * 54}px`, zIndex: i + 1 }}>
             <article className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
