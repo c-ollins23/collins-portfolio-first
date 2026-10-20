@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import bhVideo from "@/assets/blackhole_loop.mp4.asset.json";
+import bhPoster from "@/assets/blackhole_poster.jpg.asset.json";
 import { AppWindow, Network, Database, Cloud, User, Film, Cpu, BookOpen, Mail, MessageCircle } from "lucide-react";
 
 const LINKEDIN = "https://www.linkedin.com/in/collins-omondi-40b4b2441";
@@ -18,13 +21,13 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
   return (
     <section id="projects" className="relative mt-24">
       <div className="mx-auto flex w-full max-w-6xl items-end justify-between px-6 md:px-16">
-        <h2 className="font-display text-2xl font-bold">PROJECTS</h2>
+        <h2 className="font-display text-3xl font-light tracking-tight">PROJECTS</h2>
         <span className="font-mono text-sm text-muted-foreground">{total} PROJECTS</span>
       </div>
       <div className="mx-auto max-w-4xl px-6 pb-[10vh] pt-10 md:px-16">
         {items.map((it, i) => (
           <div key={it.title} className="sticky mb-10" style={{ top: `${84 + i * 54}px`, zIndex: i + 1 }}>
-            <article className="glass-surface overflow-hidden rounded-lg border border-border">
+            <article className="reveal glass-surface overflow-hidden rounded-lg border border-border">
               <header className="flex items-center justify-between border-b border-border px-5 py-3">
                 <span className="font-display text-base font-bold uppercase tracking-wide">{it.title}</span>
                 <span className="font-mono text-xs text-muted-foreground">
@@ -44,7 +47,6 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
     </section>
   );
 }
-import hero from "@/assets/hero-retouched.jpg";
 import p0 from "@/assets/p0.jpg.asset.json";
 import p1 from "@/assets/p1.jpg.asset.json";
 import p2 from "@/assets/p2.jpg.asset.json";
@@ -56,6 +58,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Elevating digital frontiers: full stack developer portfolio of Collins Omondi." },
       { property: "og:title", content: "Collins Omondi — Full Stack Developer" },
       { property: "og:description", content: "Frontend, backend, database and cloud projects." },
+      { name: "theme-color", content: "#000000" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -82,10 +85,42 @@ const projects = [
   { img: p2.url, title: "Dashboard UI" },
 ];
 
-function Index() {
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
+
+function SpaceBackground() {
+  const [motion, setMotion] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setMotion(!mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
   return (
-    <div className="portfolio-page min-h-screen bg-background font-sans text-foreground">
-      <div className="portfolio-backdrop" aria-hidden><img src={hero} alt="" /></div>
+    <div className="space-bg" aria-hidden>
+      {motion ? (
+        <video src={bhVideo.url} poster={bhPoster.url} autoPlay muted loop playsInline />
+      ) : (
+        <img src={bhPoster.url} alt="" />
+      )}
+    </div>
+  );
+}
+
+function Index() {
+  useReveal();
+  return (
+    <div className="portfolio-page min-h-screen font-sans text-foreground">
+      <SpaceBackground />
       <nav className="glass-surface sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground">
         {nav.map(({ label, icon: Icon }) => (
           <a key={label} href={`#${label.toLowerCase()}`} className="flex items-center gap-2 rounded-full px-3 py-2 transition-colors hover:bg-secondary hover:text-foreground">
@@ -97,33 +132,32 @@ function Index() {
         </a>
       </nav>
 
-      <header className="relative mx-auto max-w-6xl">
-        <img src={hero} alt="Collins Omondi in front of mountains" className="w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        <div className="absolute bottom-[8%] right-[6%] max-w-md text-right md:text-left">
-          <h1 className="hero-title font-display">
-            <span className="hero-line">Elevating</span>
-            <span className="hero-line hero-line--muted">Digital</span>
-            <span className="hero-line hero-line--muted">Frontiers</span>
-          </h1>
-          <p className="hero-subtitle">Full Stack Developer Portfolio</p>
-          <a href="#contact" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 font-semibold uppercase text-primary-foreground transition hover:brightness-125">
-            Contact me
-          </a>
+      <header className="-mt-20 flex min-h-screen items-center">
+        <div className="mx-auto w-full max-w-6xl px-6 md:px-16">
+          <div className="max-w-xl">
+            <p className="reveal text-xs uppercase tracking-[0.3em] text-muted-foreground">Collins Omondi · Full Stack Developer</p>
+            <h1 className="reveal hero-title hero-glow mt-6 font-display">Elevating digital frontiers</h1>
+            <p className="reveal mt-6 max-w-md text-lg font-light leading-relaxed text-muted-foreground">
+              I design and build fast, reliable web products — from interface to cloud.
+            </p>
+            <a href="#contact" className="reveal glow-btn mt-10 inline-block rounded-full bg-primary px-7 py-3 text-sm font-medium uppercase tracking-widest text-primary-foreground transition hover:brightness-110">
+              Contact me
+            </a>
+          </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-6 py-16 md:px-16">
-        <section className="grid gap-12 md:grid-cols-2">
-          <div id="about">
-            <h2 className="font-display text-2xl font-bold">ABOUT ME</h2>
+        <section className="grid gap-6 md:grid-cols-2">
+          <div id="about" className="reveal glass-surface rounded-2xl p-8">
+            <h2 className="font-display text-3xl font-light tracking-tight">ABOUT ME</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
               Experienced developer bridging frontend aesthetics with scalable backend architecture —
               building fast, reliable products from first sketch to production cloud deployment.
             </p>
           </div>
-          <div id="skills">
-            <h2 className="font-display text-2xl font-bold">SKILLS</h2>
+          <div id="skills" className="reveal glass-surface rounded-2xl p-8">
+            <h2 className="font-display text-3xl font-light tracking-tight">SKILLS</h2>
             <div className="mt-4 grid grid-cols-2 gap-6">
               {skills.map(({ name, icon: Icon, level }) => (
                 <div key={name} className="flex items-center gap-3">
@@ -144,11 +178,11 @@ function Index() {
       <StackingCards items={projects} />
 
       <main className="mx-auto max-w-6xl px-6 pb-16 md:px-16">
-        <section id="contact" className="contact-glass mt-20 border-y border-border px-4 py-10 text-center">
+        <section id="contact" className="reveal contact-glass mt-20 rounded-2xl px-4 py-12 text-center">
           <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
             <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Available for new projects
           </span>
-          <h2 className="mt-4 font-display text-2xl font-bold">LET'S BUILD SOMETHING</h2>
+          <h2 className="mt-4 font-display text-3xl font-light tracking-tight">LET'S BUILD SOMETHING</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:brightness-125">
               <Mail className="h-4 w-4" /> {EMAIL}
