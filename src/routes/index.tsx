@@ -119,7 +119,7 @@ function SpaceBackground() {
 function Index() {
   useReveal();
   return (
-    <div className="portfolio-page min-h-screen bg-background font-sans text-foreground">
+    <div className="portfolio-page min-h-screen font-sans text-foreground">
       <SpaceBackground />
       <nav className="glass-surface sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground">
         {nav.map(({ label, icon: Icon }) => (
