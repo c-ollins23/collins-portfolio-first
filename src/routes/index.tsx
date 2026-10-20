@@ -24,7 +24,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
       <div className="mx-auto max-w-4xl px-6 pb-[10vh] pt-10 md:px-16">
         {items.map((it, i) => (
           <div key={it.title} className="sticky mb-10" style={{ top: `${84 + i * 54}px`, zIndex: i + 1 }}>
-            <article className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
+            <article className="glass-surface overflow-hidden rounded-lg border border-border">
               <header className="flex items-center justify-between border-b border-border px-5 py-3">
                 <span className="font-display text-base font-bold uppercase tracking-wide">{it.title}</span>
                 <span className="font-mono text-xs text-muted-foreground">
@@ -44,7 +44,7 @@ function StackingCards({ items }: { items: { img: string; title: string }[] }) {
     </section>
   );
 }
-import hero from "@/assets/hero-clean.png";
+import hero from "@/assets/hero-retouched.jpg";
 import p0 from "@/assets/p0.jpg.asset.json";
 import p1 from "@/assets/p1.jpg.asset.json";
 import p2 from "@/assets/p2.jpg.asset.json";
@@ -84,8 +84,9 @@ const projects = [
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
-      <nav className="sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border bg-background/70 px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground backdrop-blur-md">
+    <div className="portfolio-page min-h-screen bg-background font-sans text-foreground">
+      <div className="portfolio-backdrop" aria-hidden><img src={hero} alt="" /></div>
+      <nav className="glass-surface sticky top-4 z-50 mx-auto my-4 flex w-fit items-center gap-1 rounded-full border border-border px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground">
         {nav.map(({ label, icon: Icon }) => (
           <a key={label} href={`#${label.toLowerCase()}`} className="flex items-center gap-2 rounded-full px-3 py-2 transition-colors hover:bg-secondary hover:text-foreground">
             <Icon className="h-4 w-4" /><span className="hidden sm:inline">{label}</span>
@@ -143,7 +144,7 @@ function Index() {
       <StackingCards items={projects} />
 
       <main className="mx-auto max-w-6xl px-6 pb-16 md:px-16">
-        <section id="contact" className="mt-20 rounded-lg border border-border bg-card p-10 text-center">
+        <section id="contact" className="contact-glass mt-20 border-y border-border px-4 py-10 text-center">
           <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
             <span className="h-2 w-2 animate-pulse rounded-full bg-primary" /> Available for new projects
           </span>
