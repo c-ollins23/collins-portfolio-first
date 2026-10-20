@@ -182,3 +182,6 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+@media (min-width: 768px) {
+  .space-bg video, .space-bg img { transform: translateX(18%) scale(1.2); }
+}
