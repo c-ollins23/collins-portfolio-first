@@ -118,8 +118,11 @@ function Index() {
           <div id="about">
             <h2 className="font-display text-2xl font-bold">ABOUT ME</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Experienced developer bridging frontend aesthetics with scalable backend architecture —
-              building fast, reliable products from first sketch to production cloud deployment.
+              Hi, I'm a software developer who loves turning messy, complex problems into clean, simple software.
+              I care just as much about how an app feels to a user as I do about how the code looks under the hood.
+              Most of my days are spent building full-stack applications, tweaking UI details until they feel just
+              right, and making sure the backend runs smoothly behind the scenes. When I'm not coding, I'm usually
+              exploring new tech, tinkering with side projects, or trying to explain what I do to my family.
             </p>
           </div>
           <div id="skills">
