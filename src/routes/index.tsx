@@ -53,9 +53,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Collins Omondi — Full Stack Developer Portfolio" },
-      { name: "description", content: "Elevating digital frontiers: full stack developer portfolio of Collins Omondi." },
+      { name: "description", content: "I build apps people actually enjoy using — full stack developer portfolio of Collins Omondi." },
       { property: "og:title", content: "Collins Omondi — Full Stack Developer" },
-      { property: "og:description", content: "Frontend, backend, database and cloud projects." },
+      { property: "og:description", content: "I build apps people actually enjoy using: frontend, backend, database and cloud projects." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -102,9 +102,9 @@ function Index() {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         <div className="absolute bottom-[8%] right-[6%] max-w-md text-right md:text-left">
           <h1 className="hero-title font-display">
-            <span className="hero-line">Elevating</span>
-            <span className="hero-line hero-line--muted">Digital</span>
-            <span className="hero-line hero-line--muted">Frontiers</span>
+            <span className="hero-line">I build apps</span>
+            <span className="hero-line hero-line--muted">people actually</span>
+            <span className="hero-line hero-line--muted">enjoy using.</span>
           </h1>
           <p className="hero-subtitle">Full Stack Developer Portfolio</p>
           <a href="#contact" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 font-semibold uppercase text-primary-foreground transition hover:brightness-125">
